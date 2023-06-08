@@ -3,7 +3,6 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordInvalid, with: :respond_with_validation
 
   def respond_with_validation(e)
-    render json: {errors: e.record.errors.messages}, status: 422
+    render json: { errors: e.record.errors.messages }, status: :unprocessable_entity
   end
-
 end

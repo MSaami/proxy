@@ -1,15 +1,15 @@
 class Message < ApplicationRecord
   DELAYED_MINUTE = 1
-  enum :status, [:processing, :done, :failed], default: :processing
-  enum :gateway, [:slack, :teamtecture, :datev]
+  enum :status, %i[processing done failed], default: :processing
+  enum :gateway, %i[slack teamtecture datev]
 
   has_one_attached :file
 
-  validates :status, inclusion: {in: statuses.keys}
-  validates :gateway, inclusion: {in: gateways.keys}
+  validates :status, inclusion: { in: statuses.keys }
+  validates :gateway, inclusion: { in: gateways.keys }
   validates :gateway, presence: true
   validates :file, presence: true
-  validates :file, attached: true, content_type: [:csv, :pdf, :jpeg, :png]
+  validates :file, attached: true, content_type: %i[csv pdf jpeg png]
 
   after_create :enqueue_to_publish
 
@@ -25,17 +25,16 @@ class Message < ApplicationRecord
     @attributes.write_cast_value("status", value)
   end
 
-
   def failed_by_exception(result)
-    self.status = 'failed'
-    self.result = {'exception_uuid': result}
-    self.save
+    self.status = "failed"
+    self.result = { 'exception_uuid': result }
+    save
   end
 
   def done_by_result(result)
-    self.status = 'done'
-    self.result = {'response': result}
-    self.save
+    self.status = "done"
+    self.result = { 'response': result }
+    save
   end
 
   def publish!
@@ -47,6 +46,7 @@ class Message < ApplicationRecord
   end
 
   private
+
   def enqueue_to_publish
     MessageSenderJob.set(wait: DELAYED_MINUTE.minute).perform_later id
   end
@@ -54,5 +54,4 @@ class Message < ApplicationRecord
   def gateway_publisher
     Gateway::GatewayFactory.make_for self
   end
-
 end

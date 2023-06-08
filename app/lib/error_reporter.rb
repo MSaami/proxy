@@ -1,8 +1,9 @@
 class ErrorReporter
   attr_reader :uuid
+
   def initialize(exception)
     @exception = exception
-    @logger ||= Logger.new('log/error_report.log')
+    @logger ||= Logger.new("log/error_report.log")
 
     generate_uuid
   end
@@ -14,6 +15,7 @@ class ErrorReporter
   end
 
   private
+
   def generate_uuid
     @uuid = SecureRandom.uuid
   end
@@ -21,5 +23,4 @@ class ErrorReporter
   def report_to_file
     @logger.error("uuid: #{@uuid}, message: #{@exception.message}, exception: #{@exception.class}")
   end
-
 end
