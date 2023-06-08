@@ -48,8 +48,44 @@ All of the exceptions and logs will be stored at `log\error_report.log` path.
 - There is an api which is accepts 3 arguments: `file`, `gateway`, and `payload`
 
 ```bash
+Create Message
 Path => localhost:3000/api/v1/message
 Method => POST
 body: {gateway: 'slack', file: UPLOADEDFILE, payload: {caption: 'Hi'}}
 
+
+Index Message
+Path => localhost:3000/api/v1/message
+Method => GET
+response: {"data": [
+        {
+            "id": 27,
+            "gateway": "slack",
+            "payload": {
+                "test": "inja"
+            },
+            "status": "done",
+            "result": {
+                "response": {
+                    "status": "200",
+                    "message": "Published to Slack"
+                }
+            },
+            "created_at": "2023-06-08T15:19:49.909Z",
+            "updated_at": "2023-06-08T15:19:59.926Z"
+        },
+        {
+            "id": 26,
+            "gateway": "slack",
+            "payload": {
+                "test": "inja"
+            },
+            "status": "failed",
+            "result": {
+                "exception_uuid": "5fed4bed-9864-4c7c-9d57-5b49fc5db140"
+            },
+            "created_at": "2023-06-08T15:19:04.905Z",
+            "updated_at": "2023-06-08T15:20:04.927Z"
+        }
+    }
 ```
