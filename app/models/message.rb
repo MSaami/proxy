@@ -1,8 +1,9 @@
 class Message < ApplicationRecord
-  DELAYED_MINUTE = 1
+  DELAYED_MINUTE = 10
   enum :status, %i[processing done failed], default: :processing
   enum :gateway, %i[slack teamtecture datev]
 
+  default_scope { order(created_at: :desc)}
   has_one_attached :file
 
   validates :status, inclusion: { in: statuses.keys }
@@ -48,7 +49,7 @@ class Message < ApplicationRecord
   private
 
   def enqueue_to_publish
-    MessageSenderJob.set(wait: DELAYED_MINUTE.minute).perform_later id
+    MessageSenderJob.set(wait: DELAYED_MINUTE.second).perform_later id
   end
 
   def gateway_publisher
