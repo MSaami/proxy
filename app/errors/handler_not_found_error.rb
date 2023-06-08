@@ -1,0 +1,2 @@
+class HandlerNotFoundError < ReportableError
+end
