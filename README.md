@@ -90,7 +90,7 @@ response: {"data": [
     }
 ```
 
-##TODO
+## TODO
 - Prevent to publish the message has already published.
 - Retry the job after failure
 - improvments on error reporter to log other severity such as `warn`
